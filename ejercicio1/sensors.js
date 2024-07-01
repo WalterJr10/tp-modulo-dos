@@ -19,7 +19,7 @@ class Sensor {
     get actualizacion(){
         return this.#updated_at
     }
-    get valu(){
+    get valore(){
         return this.#value
     }
     
@@ -27,17 +27,30 @@ class Sensor {
         this.#updated_at = updateat
     }
 
-    set valu(valor){
-        this.#value = valor
+    set valor(val){
+        this.#value = val
     }
 
-    updateValue(valor) {
+    updateValue(val) {
         const hoy = new Date();
 
-        this.valu = valor
-        this.actualizacion = hoy.toLocaleString()
-        console.log(`nuevo valor ${this.valu}`)
-        console.log(`fecha de actualizacion ${this.actualizacion}`)
+        this.valor = val;
+        this.actualizacion = hoy.toLocaleString();
+
+        const seccion = document.querySelector('section')
+        const elementoActualizado = document.createElement('div')
+        elementoActualizado.className = 'column'
+        elementoActualizado.innerHTML = `
+        
+            <h1>Sensor ID: ${this.id}</h1>
+            <div class="content">
+                <p><strong>Nuevo valor</strong>: ${this.valore}.</p>
+                
+                <p><strong>Fecha de actualizacion</strong>: ${this.actualizacion}.</p>
+            </div>
+`
+        
+        seccion.appendChild(elementoActualizado)
      
     }
 
@@ -71,9 +84,8 @@ class SensorManager {
                 default: // Valor por defecto si el tipo es desconocido
                     newValue = (Math.random() * 100).toFixed(2);
             }
-            
             sensor.updateValue(newValue);
-            this.render();
+
         } else {
             console.error(`Sensor ID ${id} no encontrado`);
         }
@@ -95,7 +107,7 @@ class SensorManager {
                     
                     this.addSensor(sensor);
                 }
-                this.render()
+                this.render();
             })
 
     }
