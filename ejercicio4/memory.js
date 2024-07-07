@@ -31,6 +31,38 @@ class Card {
         const cardElement = this.element.querySelector(".card");
         cardElement.classList.remove("flipped");
     }
+
+    getisFlipped(){
+        return this.isFlipped
+    }
+
+    setisFlipped(val){
+        this.isFlipped = val;
+    }
+
+
+    toggleFlip(){
+
+        this.setisFlipped(!this.isFlipped)
+        if (this.isFlipped){
+            this.#flip()
+        } else {
+            this.#unflip()
+        }
+
+    }
+
+    matches(otherCard){
+
+        if(this.name === otherCard.name){
+            console.log("Match")
+            return true
+        } else {
+            console.log("No match")
+            return false
+        }
+
+    }
 }
 
 class Board {
@@ -74,6 +106,28 @@ class Board {
             this.onCardClick(card);
         }
     }
+
+    shuffleCards(){
+
+        this.cards.sort(()=> Math.random() - 0.5 )
+
+    }
+
+    flipDownAllCards(){ 
+
+        this.cards.forEach((card) => {
+            card.setisFlipped(false)
+        })
+        console.log("flipdowallcards")        
+
+    }
+    reset(){
+
+        this.shuffleCards()
+        this.render()
+        
+    }
+
 }
 
 class MemoryGame {
@@ -101,6 +155,41 @@ class MemoryGame {
                 setTimeout(() => this.checkForMatch(), this.flipDuration);
             }
         }
+    }
+
+    checkForMatch(){
+
+        if (this.flippedCards[0].matches(this.flippedCards[1])) {
+            alert(`Encontraste el par de ${this.flippedCards[0].name}`)
+            this.matchedCards.push(this.flippedCards[0])
+            this.matchedCards.push(this.flippedCards[1])
+            this.flippedCards.shift()
+            this.flippedCards.pop()
+
+        } else {
+            this.flippedCards[1].toggleFlip()
+            this.flippedCards.pop()
+        }
+
+    }
+
+    resetGame(){
+        for (let i = 0; i < this.flippedCards.length; i++) {
+            this.flippedCards[i].toggleFlip()
+            this.flippedCards.pop()
+        }
+        if(this.matchedCards.length != 0){
+            console.log(this.matchedCards.isFlipped)
+            for (let i = 0; i < this.matchedCards.length; i++) {
+                this.matchedCards[i].toggleFlip()
+            }
+            this.matchedCards.pop()
+            this.matchedCards.shift()
+
+        }
+        
+        this.board.reset()
+        
     }
 }
 
