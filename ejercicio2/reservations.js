@@ -1,6 +1,48 @@
-class Customer {}
+class Customer {
+    constructor(id, name, email) {
+        this.id = id;
+        this.name = name;
+        this.email = email;
+    }
 
-class Reservation {}
+    get info() {
+        return `Nombre: ${this.name} Email: (${this.email})`;
+    }
+}
+
+class Reservation {
+    constructor(id, customer, date, guests) {
+        this.id = id;
+        this.customer = customer;
+        this.date = date;
+        this.guests = guests;
+    }
+
+    get info() {
+        const customerInfo = this.customer.info;
+        //const fechaFormateada = this.date.toLocaleString()
+        return `Reserva #${this.id}: ${this.date} - Cliente: ${customerInfo} - Comensales: ${this.guests}`;
+    }
+
+    static validateReservation(dateReserva, guests) {
+        /* 
+            metodo estatico que recibe informacion de la clase reserva y comprueba
+            datos invalidos
+        */
+        const hoy = new Date();
+        const fechaRsv = new Date(dateReserva)
+        //console.log(hoy)
+        //console.log(fechaRsv)
+
+
+        if(fechaRsv < hoy || guests <= 0){
+            return false;
+        }
+        return true;
+        
+
+    }
+}
 
 class Restaurant {
     constructor(name) {
@@ -83,3 +125,4 @@ if (Reservation.validateReservation(reservation1.date, reservation1.guests)) {
 } else {
     alert("Datos de reserva inválidos");
 }
+
